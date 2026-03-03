@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: 'https://society-event-fund-management-system-1.onrender.com/api'
+  baseURL: import.meta.env.VITE_API_URL || 'https://society-event-fund-management-system-1.onrender.com/api'
 })
 
 // Members
