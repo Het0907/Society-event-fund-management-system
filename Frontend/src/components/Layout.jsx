@@ -1,9 +1,30 @@
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import { FaClipboardList, FaUsers, FaChartLine, FaBars, FaTimes } from 'react-icons/fa'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 768px)').matches)
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 768px)')
+    const onChange = (event) => {
+      setIsMobile(event.matches)
+      if (!event.matches) {
+        setSidebarOpen(false)
+      }
+    }
+
+    setIsMobile(media.matches)
+
+    if (media.addEventListener) {
+      media.addEventListener('change', onChange)
+      return () => media.removeEventListener('change', onChange)
+    }
+
+    media.addListener(onChange)
+    return () => media.removeListener(onChange)
+  }, [])
 
   return (
     <div className="app-container">
@@ -41,7 +62,7 @@ export default function Layout({ children }) {
       </div>
 
       {/* Mobile Sidebar Overlay */}
-      {sidebarOpen && (
+      {isMobile && sidebarOpen && (
         <div 
           className="sidebar-overlay"
           onClick={() => setSidebarOpen(false)}
@@ -49,17 +70,18 @@ export default function Layout({ children }) {
       )}
 
       {/* Sidebar */}
-      <aside 
-        className={`sidebar${sidebarOpen ? ' open' : ''}`}
-        style={{
-          background: 'linear-gradient(135deg, var(--gray-900) 0%, var(--gray-800) 100%)',
-          borderRight: '1px solid var(--gray-700)',
-          padding: 'var(--space-6)',
-          boxShadow: 'var(--shadow-lg)',
-          zIndex: 50,
-          overflowY: 'auto',
-        }}
-      >
+      {(!isMobile || sidebarOpen) && (
+        <aside 
+          className="sidebar open"
+          style={{
+            background: 'linear-gradient(135deg, var(--gray-900) 0%, var(--gray-800) 100%)',
+            borderRight: '1px solid var(--gray-700)',
+            padding: 'var(--space-6)',
+            boxShadow: 'var(--shadow-lg)',
+            zIndex: 50,
+            overflowY: 'auto',
+          }}
+        >
         <div style={{ 
           marginBottom: 'var(--space-8)',
           paddingBottom: 'var(--space-4)',
@@ -122,7 +144,8 @@ export default function Layout({ children }) {
             📊 Financial tracking made simple
           </div>
         </div>
-      </aside>
+        </aside>
+      )}
       
       <main className="main-content">
         {children || <Outlet />}
@@ -136,10 +159,10 @@ export default function Layout({ children }) {
         }
 
         .sidebar {
-          position: static !important;
-          transform: none !important;
-          height: auto !important;
-          width: auto !important;
+          position: static;
+          transform: none;
+          height: auto;
+          width: auto;
           transition: none;
         }
 
@@ -170,11 +193,8 @@ export default function Layout({ children }) {
             background: var(--gray-900);
             color: white;
             overflow-y: auto;
-            transform: translateX(-100%);
-            transition: transform 0.3s;
-          }
-          .sidebar.open {
-            transform: translateX(0);
+            transform: none;
+            transition: none;
           }
         }
       `}</style>
