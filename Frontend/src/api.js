@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: '/api'
+  baseURL: 'https://society-event-fund-management-system-1.onrender.com/api'
 })
 
 // Members
