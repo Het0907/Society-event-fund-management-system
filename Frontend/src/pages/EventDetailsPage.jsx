@@ -50,8 +50,9 @@ export default function EventDetailsPage() {
     try {
       await createContribution(eventId, { 
         ...contribForm, 
-        attendees: Number(contribForm.attendees), 
-        amount_paid: Number(contribForm.amount_paid) 
+        attendees: contribForm.attendees ? Number(contribForm.attendees) : null, 
+        amount_paid: Number(contribForm.amount_paid),
+        payment_date: contribForm.payment_date || null
       })
       setContribForm({ member_id: '', attendees: 0, amount_paid: 0, payment_date: '' })
       await load()

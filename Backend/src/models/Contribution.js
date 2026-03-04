@@ -4,9 +4,9 @@ const contributionSchema = new mongoose.Schema(
   {
     event_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Event', required: true, index: true },
     member_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Member', required: true, index: true },
-    attendees: { type: Number, required: true, min: 0 },
+    attendees: { type: Number, min: 0 },
     amount_paid: { type: Number, required: true, min: 0 },
-    payment_date: { type: Date, required: true }
+    payment_date: { type: Date }
   },
   { timestamps: true }
 );
