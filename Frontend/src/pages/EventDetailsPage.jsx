@@ -206,7 +206,6 @@ export default function EventDetailsPage() {
                   placeholder="0" 
                   value={contribForm.attendees} 
                   onChange={e => setContribForm({ ...contribForm, attendees: e.target.value })} 
-                  required 
                 />
               </div>
               <div>
@@ -231,7 +230,6 @@ export default function EventDetailsPage() {
                   type="date" 
                   value={contribForm.payment_date} 
                   onChange={e => setContribForm({ ...contribForm, payment_date: e.target.value })} 
-                  required 
                 />
               </div>
             </div>
